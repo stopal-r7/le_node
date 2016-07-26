@@ -71,13 +71,18 @@ accessors, though, and invalid values will be ignored.
  - **bufferSize**: The maximum number of log entries that may be queued for
    sending at a given moment. Default: `100`.
  - **secure:** If truthy, uses a tls connection. Default: `false`.
- - **timeout:** The time, in milliseconds, that inactivity should warrant
-   closing the connection to the host until needed again. Defaults to three
-   minutes.
- - **maxFailedAttempts:** [Deprecated with new Backoff retry mechanism]
+ - **inactivityTimeout:** The time, in milliseconds, that inactivity should warrant
+   closing the connection to the host until needed again. Defaults to 15 seconds.
+ - **reconnectInitialDelay**: Initial wait time in milliseconds while reconnecting. 
+   Default: `1000
+ - **reconnectMaxDelay**: Maximum wait time in milliseconds while reconnecting.
+   Default: `15 * 1000`
+ - **reconnectBackoffStrategy**: Backoff strategy to be used while trying to reconnect.
+   It can be either `fibonacci` or `exponential`. Default: `fibonnacci`   
+ - **maxFailedAttempts:** [Removed with new connection handling]
    The number of times to retry to reach the logentries host in case of 
    error when connecting. Default: `15`.
- - **retryTimeout:** [Deprecated with new connection handling] 
+ - **retryTimeout:** [Removed with new connection handling] 
    Time to wait between attemps when trying to reach the logentries host. 
    Default: `15 * 60 * 1000`.
 
@@ -255,10 +260,10 @@ number of logs per second, or when log entries are unusually long on average).
 Outside of these situations, exceeding the max buffer size is more likely an
 indication of creating logs in a synchronous loop (which seems like a bad idea).
 
-If the connection fails, it will retry with an exponential backoff for several
-minutes. If it does not succeed in that time, an error is emitted. A ‘ban’ will
-be placed on further attempts but it will lift after some more time has passed,
-at which point the process can repeat (and hopefully work).
+If the connection fails, it will keep retrying with a `fibonacci` backoff by default. 
+Connection retry will start with a delay of `reconnectInitialDelay` and the delay between each retry 
+will go up to a maximum of `reconnectMaxDelay` with each retry in fibonacci sequence. 
+Backoff strategy can be changed to `exponential` through constructor if necessary.
 
 A connection to the host does not guarantee that your logs are transmitting
 successfully. If you have a bad token, there is no feedback from the server to
