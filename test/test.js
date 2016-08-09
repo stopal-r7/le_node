@@ -338,7 +338,7 @@ tape('Flattening options work.', function(t) {
 // SENDING DATA ////////////////////////////////////////////////////////////////
 
 function mockTest(cb) {
-	var mock = mitm();git 
+	var mock = mitm();
 
 	mock.on('connection', function(socket) {
 		socket.on('data', function(buffer) {
