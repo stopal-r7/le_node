@@ -14,7 +14,7 @@ var tape     = require('tape');
 var winston  = require('winston');
 var winston1 = require('winston1');
 var winston2 = require('winston2x');
-var ringbuffer = require('../lib/node_modules/ringbuffer.js');
+var RingBuffer = require('../lib/node_modules/ringbuffer.js');
 
 // FAKE TOKEN //////////////////////////////////////////////////////////////////
 
@@ -338,7 +338,7 @@ tape('Flattening options work.', function(t) {
 // SENDING DATA ////////////////////////////////////////////////////////////////
 
 function mockTest(cb) {
-	var mock = mitm();
+	var mock = mitm();git 
 
 	mock.on('connection', function(socket) {
 		socket.on('data', function(buffer) {
@@ -565,7 +565,7 @@ tape('RingBuffer buffers and shifts when it is full', function(t) {
 	t.plan(5);
 	t.timeoutAfter(1000);
 
-	var ringBuffer = new ringbuffer.RingBuffer({bufferSize: 1});
+	var ringBuffer = new RingBuffer({bufferSize: 1});
 	ringBuffer.on('buffer shift', function () {
 		t.pass('Buffer shift event emitted');
 	});
