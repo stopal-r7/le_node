@@ -181,9 +181,9 @@ class Logger extends Writable {
         // we are checking the buffer state here just after conn.write()
         // to make sure the last event is sent to socket.
         if (this.ringBuffer.isEmpty()) {
-          this.emit('buffer emptied');
+          this.emit('buffer drain');
           // this event is DEPRECATED - will be removed in next major release.
-          // new users should use 'buffer emptied' event instead.
+          // new users should use 'buffer drain' event instead.
           this.emit('connection drain');
         }
       } else {

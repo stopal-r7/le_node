@@ -183,6 +183,9 @@ be reopened when needed again. Disconnection can be either a result of socket in
 #### `'drain'`, `'finish'`, `'pipe'`, and `'unpipe'`
 These are events inherited from `Writable`.
 
+#### `'connection drain'`
+DEPRECATED. Use `buffer drain` event instead.
+
 #### `'buffer drain'`
 This event is emitted when the underlying ring buffer is fully consumed and becomes empty.
 This can be useful when it’s time for the application to terminate but you want
